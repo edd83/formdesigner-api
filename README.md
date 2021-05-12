@@ -1,4 +1,4 @@
-# Wizzcad project
+# Formdesigner project
 
 This goal of the project is to create a simple Typescript / Node API allowing api user to manage a formdesigner.
 
@@ -10,19 +10,6 @@ http://www.plantuml.com/plantuml/png/hLLHRzem47xthxXrqWHI4Dl3NgeqQig0eKsjnD2qIPC
 
 # Init
 
-## Install Redis (a bit long)
-For Mac ```brew install redis```
-
-For Linux ```sudo apt-get install redis-server```
-
-For Windows https://github.com/dmajkic/redis/downloads
-
-
-## Run Redis
-
-To run redis run ```redis-server``` on your terminal
-
-
 ## Install dependencies
 
 ```npm install``` or ```yarn```
@@ -30,7 +17,7 @@ To run redis run ```redis-server``` on your terminal
 
 ## Build & run the server
 
-```npm run build && npm run start```
+```npm run start```
 
 
 # Tests
