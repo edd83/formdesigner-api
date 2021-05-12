@@ -3,7 +3,7 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 
 import express, { Request, Response } from 'express';
-import { BAD_REQUEST } from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 
 import BaseRouter from './routes';
 import logger from './utils/logger';
@@ -36,7 +36,7 @@ app.use(Configuration.API_ROOT_PATH, BaseRouter);
 // Print API errors
 app.use((err: Error, req: Request, res: Response) => {
   logger.error(err.message, err);
-  return res.status(BAD_REQUEST).json({
+  return res.status(StatusCodes.BAD_REQUEST).json({
     error: err.message
   });
 });
