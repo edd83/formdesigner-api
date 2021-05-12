@@ -9,7 +9,7 @@
     "build": "node build.js",
     "start": "npm run lint:fix && npm run build && node ./dist/index.js --env=development",
     "dev": "node ./dist/index.js --env=development",
-    "test": "ts-node -r tsconfig-paths/register ./spec"
+    "test:integration": "newman run test-integration/fordesigner.json"
   },
   "dependencies": {
     "command-line-args": "^5.1.1",

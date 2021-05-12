@@ -1,0 +1,457 @@
+{
+	"info": {
+		"_postman_id": "a20b37e3-89de-4bed-a50a-ef9801510e0f",
+		"name": "Wizzcad",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Successful creates",
+			"item": [
+				{
+					"name": "Add template",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"ID is type number\", () => {",
+									"    const { id } = pm.response.json();",
+									"    pm.expect(typeof id).to.eql('number');",
+									"});",
+									"",
+									"// Clean up",
+									"const deleteEndpoint = pm.variables.get(\"templateEndPoint\");",
+									"const deleteTemplateRequest = {",
+									"    url: `${deleteEndpoint}/${pm.response.json().id}`,",
+									"    method: 'DELETE'",
+									"}",
+									"pm.sendRequest(deleteTemplateRequest);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"template\": {\n        \"title\": \"Brigands 2\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{templateEndPoint}}",
+							"host": [
+								"{{templateEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add section",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"ID is type number\", () => {",
+									"    const { id } = pm.response.json();",
+									"    pm.expect(typeof id).to.eql('number');",
+									"});",
+									"",
+									"// Clean up",
+									"const deleteEndpointAssociate = pm.variables.get(\"fieldSectionEndPoint\");",
+									"const deleteEndpoint = pm.variables.get(\"sectionEndPoint\");",
+									"const deleteSectionRequest = {",
+									"    url: `${deleteEndpoint}/${pm.response.json().id}`,",
+									"    method: 'DELETE'",
+									"}",
+									"pm.sendRequest(deleteSectionRequest);",
+									"const deleteAssociateRequest = {",
+									"    url: `${deleteEndpointAssociate}/${pm.response.json().id}`,",
+									"    method: 'DELETE'",
+									"}",
+									"pm.sendRequest(deleteAssociateRequest);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"section\": {\n        \"title\": \"Brigands name\",\n        \"hidding\": false,\n        \"fields\": [1, 2],\n        \"template\": 1\n    }\n}"
+						},
+						"url": {
+							"raw": "{{sectionEndPoint}}",
+							"host": [
+								"{{sectionEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"ID is type number\", () => {",
+									"    const { id } = pm.response.json();",
+									"    pm.expect(typeof id).to.eql('number');",
+									"});",
+									"",
+									"// Clean up",
+									"const deleteEndpoint = pm.variables.get(\"fieldEndPoint\");",
+									"const deleteFieldRequest = {",
+									"    url: `${deleteEndpoint}/${pm.response.json().id}`,",
+									"    method: 'DELETE'",
+									"}",
+									"pm.sendRequest(deleteFieldRequest);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"field\": {\n        \"hidding\": true,\n        \"mandatory\": true,\n        \"template\": 1,\n        \"title\": \"ton age?\",\n        \"type\": \"text\",\n        \"value\": \"642\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{fieldEndPoint}}",
+							"host": [
+								"{{fieldEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Successful updates",
+			"item": [
+				{
+					"name": "Add template",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"template\": {\n        \"title\": \"Brigands\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{templateEndPoint}}/1",
+							"host": [
+								"{{templateEndPoint}}"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add section",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"section\": {\n        \"title\": \"Brigands name\",\n        \"hidding\": false,\n        \"fields\": [1, 2],\n        \"parentId\": 7,\n        \"template\": 1\n    }\n}"
+						},
+						"url": {
+							"raw": "{{sectionEndPoint}}/8",
+							"host": [
+								"{{sectionEndPoint}}"
+							],
+							"path": [
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add field",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"field\": {\n        \"hidding\": true,\n        \"mandatory\": true,\n        \"template\": 1,\n        \"title\": \"ton nom?\",\n        \"type\": \"text\",\n        \"value\": \"joe la frime\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{fieldEndPoint}}/1",
+							"host": [
+								"{{fieldEndPoint}}"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Successful gets",
+			"item": [
+				{
+					"name": "Successful GET templates",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"template\": {\n        \"title\": \"Brigands\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{templateEndPoint}}",
+							"host": [
+								"{{templateEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Successful GET sections",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{sectionEndPoint}}",
+							"host": [
+								"{{sectionEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Successful GET fields",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"field\": {\n        \"hidding\": true,\n        \"mandatory\": true,\n        \"template\": 1,\n        \"title\": \"ton nom?\",\n        \"type\": \"text\",\n        \"value\": \"joe la frime\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{fieldEndPoint}}",
+							"host": [
+								"{{fieldEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Successful GET template id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"template\": {\n        \"title\": \"Brigands\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{templateEndPoint}}/1",
+							"host": [
+								"{{templateEndPoint}}"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Successful GET section id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"template\": {\n        \"title\": \"Brigands\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{sectionEndPoint}}/8",
+							"host": [
+								"{{sectionEndPoint}}"
+							],
+							"path": [
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Successful GET field id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"template\": {\n        \"title\": \"Brigands\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{fieldEndPoint}}/1",
+							"host": [
+								"{{fieldEndPoint}}"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Failed creates",
+			"item": []
+		},
+		{
+			"name": "Failed updates",
+			"item": []
+		},
+		{
+			"name": "Failed gets",
+			"item": []
+		}
+	]
+}
