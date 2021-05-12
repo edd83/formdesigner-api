@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { getConnection } from 'typeorm';
+import { Configuration } from '../config/config';
 import logger from '../utils/logger';
 import { Field } from '../entities/field';
 import { paramMissingError } from '../utils/constants';
@@ -66,7 +67,7 @@ router.post('/', async (req: Request, res: Response) => {
         error: paramMissingError
       });
     }
-    await getConnection()
+    const result = await getConnection()
       .createQueryBuilder()
       .insert()
       .into(Field)
@@ -81,7 +82,7 @@ router.post('/', async (req: Request, res: Response) => {
         }
       ])
       .execute();
-    return res.status(StatusCodes.CREATED).end();
+    return res.status(StatusCodes.CREATED).json(result.raw[0]).end();
   } catch (e) {
     logger.error(e);
   }
@@ -118,5 +119,22 @@ router.put('/:id', async (req: Request, res: Response) => {
     logger.error(e);
   }
 });
+
+/** ****************************************************************************
+ *                    Delete - "DELETE /api/v1/field/:id"
+ ***************************************************************************** */
+
+if (Configuration.IS_TEST) {
+  router.delete('/:id', async (req: Request, res: Response) => {
+    const { id } = req.params;
+    await getConnection()
+      .createQueryBuilder()
+      .delete()
+      .from(Field)
+      .where('id = :id', { id })
+      .execute();
+    return res.status(StatusCodes.OK).end();
+  });
+}
 
 export default router;

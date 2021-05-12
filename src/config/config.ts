@@ -22,10 +22,22 @@ function getEnvAsNumber(name: string, defaultValue?: number): number {
   throw new EnvironmentVariableMissing(name);
 }
 
+function getEnvAsBoolean(name: string, defaultValue?: boolean): boolean {
+  const env = process.env[name];
+  if (env !== undefined) {
+    return process.env[name] === 'true';
+  }
+  if (defaultValue) {
+    return defaultValue;
+  }
+  throw new EnvironmentVariableMissing(name);
+}
+
 export interface ConfigurationType {
   API_ROOT_PATH: string;
   NODE_ENV: string;
   HEALTH_CHECK_PATH: string;
+  IS_TEST: boolean;
   PORT: number;
   REDIS_PORT: number;
   SERVICE_NAME: string;
@@ -35,6 +47,7 @@ export interface ConfigurationType {
 export const Configuration: ConfigurationType = {
   API_ROOT_PATH: getEnv('API_ROOT_PATH'),
   HEALTH_CHECK_PATH: 'health-check',
+  IS_TEST: getEnvAsBoolean('IS_TEST', false),
   NODE_ENV: getEnv('NODE_ENV'),
   PORT: getEnvAsNumber('PORT', 3000),
   REDIS_PORT: getEnvAsNumber('REDIS_PORT', 6379),

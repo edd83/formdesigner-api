@@ -5,6 +5,7 @@ import { getFieldsSectionId, getSectionChildren } from '../utils/functions';
 import { Section } from '../entities/section';
 import { paramMissingError } from '../utils/constants';
 import logger from '../utils/logger';
+import { Configuration } from '../config/config';
 
 // Init shared
 const router = Router();
@@ -15,18 +16,19 @@ const router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const sections = await getConnection()
+    const originalSections = await getConnection()
       .getRepository(Section)
       .createQueryBuilder('section')
       .getMany();
-    logger.info(sections);
-    const modifiedSections = sections.map(async (sct) => {
+    logger.info(originalSections);
+    const sections = originalSections.map(async (sct) => {
+      logger.info(JSON.stringify(sct));
       const newSection = sct;
       newSection.children = [await getSectionChildren(newSection)];
       newSection.fields = await getFieldsSectionId(newSection.id);
       return newSection;
     });
-    return res.status(StatusCodes.OK).json({ modifiedSections });
+    return res.status(StatusCodes.OK).json({ sections });
   } catch (e) {
     logger.error(e);
   }
@@ -95,20 +97,20 @@ router.post('/', async (req: Request, res: Response) => {
         .values(values)
         .execute();
     }
-    if (section.parentId) {
-      await getConnection()
-        .createQueryBuilder()
-        .insert()
-        .into('section_closure')
-        .values([
-          {
-            id_ancestor: section.parentId,
-            id_descendant: result.identifiers[0].id
-          }
-        ])
-        .execute();
-    }
-    return res.status(StatusCodes.CREATED).end();
+    // if (section.parentId) {
+    //   await getConnection()
+    //     .createQueryBuilder()
+    //     .insert()
+    //     .into('section_closure')
+    //     .values([
+    //       {
+    //         id_ancestor: section.parentId,
+    //         id_descendant: result.identifiers[0].id
+    //       }
+    //     ])
+    //     .execute();
+    // }
+    return res.status(StatusCodes.CREATED).json(result.raw[0]).end();
   } catch (e) {
     logger.error(e);
   }
@@ -150,24 +152,41 @@ router.put('/:id', async (req: Request, res: Response) => {
     }
     logger.info(section.parentId);
     logger.info(id);
-    if (section.parentId) {
-      await getConnection()
-        .createQueryBuilder()
-        .insert()
-        .into('section_closure')
-        .values([
-          {
-            id_ancestor: section.parentId,
-            id_descendant: id
-          }
-        ])
-        .onConflict(`("id_ancestor", "id_descendant") DO NOTHING`)
-        .execute();
-    }
+    // if (section.parentId) {
+    //   await getConnection()
+    //     .createQueryBuilder()
+    //     .insert()
+    //     .into('section_closure')
+    //     .values([
+    //       {
+    //         id_ancestor: section.parentId,
+    //         id_descendant: id
+    //       }
+    //     ])
+    //     .onConflict(`("id_ancestor", "id_descendant") DO NOTHING`)
+    //     .execute();
+    // }
     return res.status(StatusCodes.OK).end();
   } catch (e) {
     logger.error(e);
   }
 });
+
+/** ****************************************************************************
+ *                    Delete - "DELETE /api/v1/section/:id"
+ ***************************************************************************** */
+
+if (Configuration.IS_TEST) {
+  router.delete('/:id', async (req: Request, res: Response) => {
+    const { id } = req.params;
+    await getConnection()
+      .createQueryBuilder()
+      .delete()
+      .from(Section)
+      .where('id = :id', { id })
+      .execute();
+    return res.status(StatusCodes.OK).end();
+  });
+}
 
 export default router;

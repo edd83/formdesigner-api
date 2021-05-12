@@ -1,13 +1,6 @@
 import { getConnection } from 'typeorm';
 import { Field } from '../entities/field';
 import { Section } from '../entities/section';
-import logger from './logger';
-
-export const pErr = (err: Error) : void => {
-  if (err) {
-    logger.error(err);
-  }
-};
 
 // For template
 export async function getSectionsComponent(ids: number[]): Promise<Section[]> {
@@ -40,6 +33,10 @@ export async function getFieldsSectionId(id: number): Promise<Field[]> {
 }
 
 export async function getSectionChildren(parent: Section): Promise<Section> {
+  await getConnection()
+    .createQueryBuilder(Section, 'section')
+    .where('section.parent = :id', { id: parent.id })
+    .getMany();
   return await getConnection()
     .getTreeRepository(Section)
     .findDescendantsTree(parent);
