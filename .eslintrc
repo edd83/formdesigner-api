@@ -1,0 +1,95 @@
+{
+    "root": true,
+    "plugins": ["eslint-plugin", "@typescript-eslint", "jest"],
+    "env": {
+        "es6": true,
+        "node": true
+    },
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [".js", ".jsx", ".ts", ".tsx"]
+            }
+        }
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "airbnb-base"
+    ],
+    "rules": {
+        "comma-dangle": ["error", "never"],
+        "semi": ["error", "always"],
+        "max-len": ["error", {"code": 140 }],
+        "quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
+        "curly": ["error", "all"],
+        "no-mixed-operators": "error",
+        "no-console": "error",
+        "import/no-unresolved": "error",
+        "import/extensions": "off",
+        "sort-keys": ["error", "asc", {"caseSensitive": false}],
+        "require-atomic-updates": "error",
+        "import/prefer-default-export": "off",
+        "no-else-return": "error",
+        "no-unneeded-ternary": "error",
+        "no-nested-ternary": "error",
+        "prefer-template": "error",
+        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+        "object-curly-newline": ["off", { "consistent": true }],
+        "quote-props": ["error", "consistent-as-needed"],
+        "operator-linebreak": ["error", "after"],
+        "class-methods-use-this": "off",
+        "prefer-destructuring": "off",
+        "no-return-await": "off",
+        "consistent-return": "off",
+        "no-restricted-globals": "off",
+        "@typescript-eslint/indent": ["error", 2],
+        "@typescript-eslint/no-explicit-any": "error",
+        "@typescript-eslint/no-non-null-assertion": "error",
+        "@typescript-eslint/explicit-function-return-type": "error",
+        "@typescript-eslint/explicit-member-accessibility": "error",
+        "@typescript-eslint/no-var-requires": "error",
+        "@typescript-eslint/no-use-before-define": "error",
+        "@typescript-eslint/no-parameter-properties": "error"
+    },
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": false
+        },
+        "project": "./tsconfig.json"
+    },
+    "overrides": [{
+            "files": [
+                "nodes_modules/eslint-plugin-tslint/tests/**/*.ts",
+                "nodes_modules/eslint-plugin/tests/**/*.test.ts",
+                "nodes_modules/parser/tests/**/*.ts",
+                "nodes_modules/typescript-estree/tests/**/*.ts"
+            ],
+            "rules": {
+                "jest/no-disabled-tests": "warn",
+                "jest/no-focused-tests": "error",
+                "jest/no-alias-methods": "error",
+                "jest/no-identical-title": "error",
+                "jest/no-jasmine-globals": "error",
+                "jest/no-jest-import": "error",
+                "jest/no-test-prefixes": "error",
+                "jest/no-test-callback": "error",
+                "jest/no-test-return-statement": "error",
+                "jest/prefer-to-have-length": "warn",
+                "jest/prefer-spy-on": "error",
+                "jest/valid-expect": "error"
+            }
+        },
+        {
+            "files": [
+                "nodes_modules/eslint-plugin/test/**/*.ts",
+                "nodes_modules/eslint-plugin-tslint/tests/**/*.spec.ts"
+            ],
+            "rules": {
+                "eslint-plugin/no-identical-tests": "error"
+            }
+        }
+    ]
+}
