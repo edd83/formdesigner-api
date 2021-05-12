@@ -1,6 +1,20 @@
 # Formdesigner project
 
 This goal of the project is to create a simple Typescript / Node API allowing api user to manage a formdesigner.
+Each form template contains typed fields that can be named by the user and marked as mandatory.
+
+The following field types are needed :
+
+text
+numeric (fixed, float, percent ...)
+true / false
+list selector (from a specified list values)
+To allow clear view on form display, user can group fields by sections in the form designer. A section can contains one or many sections or directly fields.
+
+The API should allow creation and edition of form templates, fields and sections. Data should never be deleted in the db but user can mark as deleted and restore items in his interface.
+
+The api should expose list of available form templates and a specific template by id returning all the informations of the selected item.
+
 
 ## UML generated via typeorm-uml
 
@@ -48,5 +62,6 @@ Started from https://github.com/velotio-tech/typescript-express-web-server/tree/
 - [ ] Integration tests with Postman
 - [ ] Swagger generation
 - [ ] Default fields migration
-- [ ] Try/Catch around data queries
+- [x] Try/Catch around data queries
+- [ ] Better errors definition
 - [ ] Validations with Joi
