@@ -30,3 +30,23 @@ http://www.plantuml.com/plantuml/png/hLLHRzem47xthxXrqWHI4Dl3NgeqQig0eKsjnD2qIPC
 # Credits
 
 Started from https://github.com/velotio-tech/typescript-express-web-server/tree/1ad2990d1f24bc57bcb4857976069a7e84420ad2
+
+# Progress
+
+- [x] Boilerplate
+- [x] Adaptation to the needs
+- [x] Entities
+- [x] Migration generation
+- [x] Template queries
+- [x] Field queries
+- [x] Section queries
+- [x] Create fields populate associating table
+- [x] Section fields management
+- [ ] Section tree management
+- [ ] TLS?
+- [ ] Unit tests with Jest
+- [ ] Integration tests with Postman
+- [ ] Swagger generation
+- [ ] Default fields migration
+- [ ] Try/Catch around data queries
+- [ ] Validations with Joi
