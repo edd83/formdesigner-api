@@ -64,4 +64,4 @@ Started from https://github.com/velotio-tech/typescript-express-web-server/tree/
 - [ ] Default fields migration
 - [x] Try/Catch around data queries
 - [ ] Better errors definition
-- [ ] Validations with Joi
+- [x] Validations with Joi
