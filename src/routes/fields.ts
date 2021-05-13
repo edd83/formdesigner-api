@@ -5,6 +5,7 @@ import { Configuration } from '../config/config';
 import logger from '../utils/logger';
 import { Field } from '../entities/field';
 import { paramMissingError } from '../utils/constants';
+import { Schemas } from '../validation/schemas';
 
 // Init shared
 const router = Router();
@@ -55,18 +56,17 @@ router.get('/:id', async (req: Request, res: Response) => {
 
 router.post('/', async (req: Request, res: Response) => {
   try {
-    logger.info('Entering add field data');
     const {
       field
     } = req.body;
 
-    logger.info('Preparing add field data');
-
-    if (!field) {
+    const schema = Schemas.TemplateDetails.validate(field);
+    if (schema.error && schema.error.details) {
       return res.status(StatusCodes.BAD_REQUEST).json({
-        error: paramMissingError
+        error: schema.error.details[0].message
       });
     }
+
     const result = await getConnection()
       .createQueryBuilder()
       .insert()
@@ -96,11 +96,14 @@ router.put('/:id', async (req: Request, res: Response) => {
   try {
     const { field } = req.body;
     const { id } = req.params;
-    if (!field) {
+
+    const schema = Schemas.TemplateDetails.validate(field);
+    if (schema.error && schema.error.details) {
       return res.status(StatusCodes.BAD_REQUEST).json({
-        error: paramMissingError
+        error: schema.error.details[0].message
       });
     }
+
     await getConnection()
       .createQueryBuilder()
       .update(Field)

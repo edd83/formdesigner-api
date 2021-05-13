@@ -6,6 +6,7 @@ import { Section } from '../entities/section';
 import { paramMissingError } from '../utils/constants';
 import logger from '../utils/logger';
 import { Configuration } from '../config/config';
+import { Schemas } from '../validation/schemas';
 
 // Init shared
 const router = Router();
@@ -70,11 +71,13 @@ router.post('/', async (req: Request, res: Response) => {
       section
     } = req.body;
 
-    if (!section) {
+    const schema = Schemas.TemplateDetails.validate(section);
+    if (schema.error && schema.error.details) {
       return res.status(StatusCodes.BAD_REQUEST).json({
-        error: paramMissingError
+        error: schema.error.details[0].message
       });
     }
+
     const result = await getConnection()
       .createQueryBuilder()
       .insert()
@@ -124,11 +127,14 @@ router.put('/:id', async (req: Request, res: Response) => {
   try {
     const { section } = req.body;
     const { id } = req.params;
-    if (!section) {
+
+    const schema = Schemas.TemplateDetails.validate(section);
+    if (schema.error && schema.error.details) {
       return res.status(StatusCodes.BAD_REQUEST).json({
-        error: paramMissingError
+        error: schema.error.details[0].message
       });
     }
+
     await getConnection()
       .createQueryBuilder()
       .update(Section)

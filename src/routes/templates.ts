@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { getConnection } from 'typeorm';
+import { Schemas } from '../validation/schemas';
 import { Configuration } from '../config/config';
 // import { getSectionsComponent, getFieldsComponent } from '../utils/functions';
 import { Template } from '../entities/template';
@@ -59,20 +60,14 @@ router.post('/', async (req: Request, res: Response) => {
     const {
       template
     } = req.body;
-    // let sections, fields;
 
-    if (!template) {
+    const schema = Schemas.TemplateDetails.validate(template);
+    if (schema.error && schema.error.details) {
       return res.status(StatusCodes.BAD_REQUEST).json({
-        error: paramMissingError
+        error: schema.error.details[0].message
       });
     }
-    // if (template.sections) {
-    //   sections = await getSectionsComponent(template.sections);
-    // }
-    // if (template.fields) {
-    //   fields = await getFieldsComponent(template.fields);
-    //   logger.info(JSON.stringify(fields));
-    // }
+
     const result = await getConnection()
       .createQueryBuilder()
       .insert()
@@ -99,18 +94,19 @@ router.put('/:id', async (req: Request, res: Response) => {
   try {
     const { template } = req.body;
     const { id } = req.params;
-    if (!template) {
+
+    const schema = Schemas.TemplateDetails.validate(template);
+    if (schema.error && schema.error.details) {
       return res.status(StatusCodes.BAD_REQUEST).json({
-        error: paramMissingError
+        error: schema.error.details[0].message
       });
     }
-    // const sections = await getSectionsComponent(template.sections);
-    // const fields = await getFieldsComponent(template.fields);
+
     await getConnection()
       .createQueryBuilder()
       .update(Template)
       .set({
-        fields: template.fields,
+        fields: template.fields ? template.fields : null,
         sections: template.sections,
         title: template.title
       })
